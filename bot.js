@@ -200,21 +200,7 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
   }
 });
 
-bot.on('callback_query', async (callbackQuery) => {
-    const msg = callbackQuery.message;
-    const data = callbackQuery.data;
-
-    if (data === "copy_code") {
-        await bot.answerCallbackQuery(callbackQuery.id, {
-            text: "📋 Tap and hold the code above to copy it!",
-            show_alert: true
-        });
-    }
-
-    if (data === 'check_join') {
-        await bot.sendMessage(msg.chat.id, "✅ You can now use the /pair command again.");
-    }
-});
+if (!fs.existsSync(pairingPath)) {
 
   const input = match[1]?.trim();
 
