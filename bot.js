@@ -201,41 +201,22 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
 });
 
 bot.on('callback_query', async (callbackQuery) => {
-  if (callbackQuery.data === "copy_code") {
-    await bot.answerCallbackQuery(callbackQuery.id, { 
-      text: "📋 Tap and hold the code above to copy it!", 
-      show_alert: true
-    });
-  }
+    if (callbackQuery.data === "copy_code") {
+        await bot.answerCallbackQuery(callbackQuery.id, {
+            text: "📋 Tap and hold the code above to copy it!",
+            show_alert: true
+        });
+    }
 });
 
 bot.on('callback_query', async (callbackQuery) => {
-  const msg = callbackQuery.message;
-  const data = callbackQuery.data;
+    const msg = callbackQuery.message;
+    const data = callbackQuery.data;
 
-  if (data === 'check_join') {
-    const userId = callbackQuery.from.id;
-    const channels = []; 
-
-    try {
-      let allJoined = true;
-      let notJoined = [];
-
-      for (const channel of channels) {
-        try {
-          const member = await bot.getChatMember(channel, userId);
-
-          if (!['member', 'administrator', 'creator'].includes(member.status)) {
-            allJoined = false;
-            notJoined.push(channel);
-          }
-        } catch (err) {
-          allJoined = false;
-          notJoined.push(channel);
-          console.error(`❌ Cannot check membership in ${channel}:`, err.message);
-        }
-      }
-
+    if (data === 'check_join') {
+        await bot.sendMessage(msg.chat.id, "✅ You can now use the /pair command again.");
+    }
+});
       if (allJoined) {
         await bot.sendMessage(msg.chat.id, '✅ You’ve joined all required channels. Now use the /pair command again.');
       } else {
