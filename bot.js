@@ -215,7 +215,7 @@ bot.on('callback_query', async (callbackQuery) => {
 
   if (data === 'check_join') {
     const userId = callbackQuery.from.id;
-    const channels = ['@mr_asad_bugbot_5', '@mdbotbackup']; 
+    const channels = ['@mr_asad_bugbot_5', ]; 
 
     try {
       let allJoined = true;
