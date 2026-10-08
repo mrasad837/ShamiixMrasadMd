@@ -1,6 +1,6 @@
 {
   "name": "shamiixmrasadmdt",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "MD Telegram Bot",
   "main": "index.js",
   "scripts": {
