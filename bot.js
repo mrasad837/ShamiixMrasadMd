@@ -201,41 +201,21 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
 });
 
 bot.on('callback_query', async (callbackQuery) => {
-    if (callbackQuery.data === "copy_code") {
+    const msg = callbackQuery.message;
+    const data = callbackQuery.data;
+
+    if (data === "copy_code") {
         await bot.answerCallbackQuery(callbackQuery.id, {
             text: "📋 Tap and hold the code above to copy it!",
             show_alert: true
         });
     }
-});
-
-bot.on('callback_query', async (callbackQuery) => {
-    const msg = callbackQuery.message;
-    const data = callbackQuery.data;
 
     if (data === 'check_join') {
         await bot.sendMessage(msg.chat.id, "✅ You can now use the /pair command again.");
     }
 });
-      if (allJoined) {
-        await bot.sendMessage(msg.chat.id, '✅ You’ve joined all required channels. Now use the /pair command again.');
-      } else {
-        await bot.sendMessage(msg.chat.id, 
-          `You haven’t joined all required channels.\n\nMissing: ${notJoined.join(', ')}`);
-      }
 
-    } catch (err) {
-      console.error("⚠️ CHECK_JOIN ERROR:", err);
-      bot.answerCallbackQuery(callbackQuery.id, { 
-        text: 'Bot must be admin in the channels to check membership.', 
-        show_alert: true
-      });
-    }
-  }
-});
-
-bot.onText(/\/unpair(?:\s+(.+))?/, async (msg, match) => {
-  const chatId = msg.chat.id;
   const input = match[1]?.trim();
 
   try {
