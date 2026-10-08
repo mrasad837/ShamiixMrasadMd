@@ -127,7 +127,7 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
           reply_markup: {
             inline_keyboard: [
               [{ text: 'Channel 1', url: 'https://t.me/mr_asad_bugbot_5' }],
-              [{ text: 'Channel 2', url: 'https://t.me/shamiixmrasadmd' }],
+              [{ text: 'Channel 2', url: 'https://t.me/mdbotbackup' }],
               [{ text: 'Group', url: 'https://t.me/mr_asad_bugbot_1' }],
               [{ text: '✅ Done', callback_data: 'check_join' }]
             ]
@@ -200,8 +200,61 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
   }
 });
 
-if (!fs.existsSync(pairingPath)) {
+bot.on('callback_query', async (callbackQuery) => {
+  if (callbackQuery.data === "copy_code") {
+    await bot.answerCallbackQuery(callbackQuery.id, { 
+      text: "📋 Tap and hold the code above to copy it!", 
+      show_alert: true
+    });
+  }
+});
 
+bot.on('callback_query', async (callbackQuery) => {
+  const msg = callbackQuery.message;
+  const data = callbackQuery.data;
+
+  if (data === 'check_join') {
+    const userId = callbackQuery.from.id;
+    const channels = ['@mr_asad_bugbot_5', '@mdbotbackup']; 
+
+    try {
+      let allJoined = true;
+      let notJoined = [];
+
+      for (const channel of channels) {
+        try {
+          const member = await bot.getChatMember(channel, userId);
+
+          if (!['member', 'administrator', 'creator'].includes(member.status)) {
+            allJoined = false;
+            notJoined.push(channel);
+          }
+        } catch (err) {
+          allJoined = false;
+          notJoined.push(channel);
+          console.error(`❌ Cannot check membership in ${channel}:`, err.message);
+        }
+      }
+
+      if (allJoined) {
+        await bot.sendMessage(msg.chat.id, '✅ You’ve joined all required channels. Now use the /pair command again.');
+      } else {
+        await bot.sendMessage(msg.chat.id, 
+          `You haven’t joined all required channels.\n\nMissing: ${notJoined.join(', ')}`);
+      }
+
+    } catch (err) {
+      console.error("⚠️ CHECK_JOIN ERROR:", err);
+      bot.answerCallbackQuery(callbackQuery.id, { 
+        text: 'Bot must be admin in the channels to check membership.', 
+        show_alert: true
+      });
+    }
+  }
+});
+
+bot.onText(/\/unpair(?:\s+(.+))?/, async (msg, match) => {
+  const chatId = msg.chat.id;
   const input = match[1]?.trim();
 
   try {
