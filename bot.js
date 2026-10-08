@@ -127,7 +127,7 @@ bot.onText(/\/pair(?:\s+(.+))?/, async (msg, match) => {
           reply_markup: {
             inline_keyboard: [
               [{ text: 'Channel 1', url: 'https://t.me/mr_asad_bugbot_5' }],
-              [{ text: 'Channel 2', url: 'https://t.me/mr_asad_bugbot_5' }],
+              [{ text: 'Channel 2', url: 'https://t.me/shamiixmrasadmd' }],
               [{ text: 'Group', url: 'https://t.me/mr_asad_bugbot_1' }],
               [{ text: '✅ Done', callback_data: 'check_join' }]
             ]
